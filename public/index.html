@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/config.js"></script><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#0f7a4d"><link rel="icon" href="/icon-192.png"><link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Finance Freedom</title>
+<style>
+:root{--bg:#f6f4ef;--cd:#fff;--tx:#1d2320;--mu:#6b746f;--ac:#0f7a4d;--on:#fff;--ok:#0f7a4d;--bd:#c23b3b;--wn:#b7791f;--ln:#e3ded3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+:root[data-t=night]{--bg:#0e1512;--cd:#17211c;--tx:#e8efe9;--mu:#8fa196;--ac:#3ddc97;--on:#06281a;--ok:#3ddc97;--bd:#ff7a7a;--wn:#f1c057;--ln:#26342c}
+:root[data-t=saffron]{--bg:#fff7ec;--cd:#fff;--tx:#3a2410;--mu:#8a6a4c;--ac:#e2731b;--on:#fff;--ln:#f0dcc3}
+:root[data-t=ocean]{--bg:#eaf4f8;--cd:#fff;--tx:#0e2a38;--mu:#557486;--ac:#0b7fa8;--on:#fff;--ln:#cfe3ec}
+:root[data-t=rose]{--bg:#fbeff2;--cd:#fff;--tx:#3a1420;--mu:#86596a;--ac:#c2295a;--on:#fff;--ln:#f0d3dc}
+:root[data-t=violet]{--bg:#17132a;--cd:#211b3a;--tx:#ece8ff;--mu:#a59fc9;--ac:#a78bfa;--on:#1b1233;--ln:#332b57;--ok:#7be0b0;--bd:#ff8a8a}
+:root[data-t=slate]{--bg:#1c1f26;--cd:#262a33;--tx:#e9ebf0;--mu:#9aa1b0;--ac:#f4b740;--on:#2a1e02;--ln:#363b47;--ok:#6fd9a0;--bd:#ff8080}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.45 "Trebuchet MS","Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;max-width:560px;margin:auto}
+header{padding:12px 14px 8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+h1{font:800 21px/1 Georgia,serif;margin:0;flex:1;letter-spacing:-.3px}
+input,select,button,textarea{font:inherit;color:var(--tx)}
+input,select{background:var(--cd);border:1px solid var(--ln);border-radius:10px;padding:9px 10px;width:100%}
+#q{flex-basis:100%}
+main{flex:1;overflow:auto;padding:4px 14px 84px;position:relative;overscroll-behavior:contain}
+#ptr{text-align:center;color:var(--mu);height:0;overflow:hidden;font-size:13px}
+.card{background:var(--cd);border:1px solid var(--ln);border-radius:14px;padding:12px;margin:0 0 10px}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.mu{color:var(--mu);font-size:12.5px}.b{font-weight:700}
+.tag{font-size:11.5px;padding:2px 8px;border-radius:99px;border:1px solid var(--ln);white-space:nowrap}
+.tag.m{background:var(--ac);color:var(--on);border-color:var(--ac)}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-top:8px}
+.g div span{display:block;color:var(--mu);font-size:11.5px}
+.pos{color:var(--ok)}.neg{color:var(--bd)}
+.btn{background:var(--ac);color:var(--on);border:0;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer}
+.btn.o{background:none;color:var(--ac);border:1px solid var(--ac)}.btn.d{background:var(--bd);color:#fff}
+.btn.s{padding:6px 10px;font-size:13px}
+.tabs{display:flex;gap:6px;margin:6px 0 10px;overflow-x:auto}
+.tabs button{background:var(--cd);border:1px solid var(--ln);border-radius:99px;padding:6px 13px;white-space:nowrap;cursor:pointer}
+.tabs button.on{background:var(--ac);color:var(--on);border-color:var(--ac)}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:560px;background:var(--cd);border-top:1px solid var(--ln);display:flex;padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;background:none;border:0;padding:10px 2px;font-size:12px;color:var(--mu);cursor:pointer}
+nav button.on{color:var(--ac);font-weight:800}
+nav button i{display:block;font-style:normal;font-size:18px}
+.bar{height:8px;background:var(--ln);border-radius:9px;overflow:hidden;margin:3px 0 8px}.bar b{display:block;height:100%;background:var(--ac)}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:5px 4px;border-bottom:1px solid var(--ln);text-align:right}td:first-child,th:first-child{text-align:left}
+.ov{position:fixed;inset:0;background:#0009;display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.sh{background:var(--bg);width:100%;max-width:560px;max-height:88%;overflow:auto;border-radius:18px 18px 0 0;padding:16px}
+label{display:block;margin:10px 0 3px;font-size:13px;color:var(--mu)}
+#toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:9px 14px;border-radius:10px;z-index:20;display:none;max-width:90%}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.cal div{padding:6px 0;border-radius:8px;font-size:13px;min-height:38px}.cal .d{background:var(--cd);border:1px solid var(--ln);cursor:pointer}
+.cal .t{border-color:var(--ac);font-weight:800}.cal .s{background:var(--ac);color:var(--on)}
+.dot{display:inline-block;width:6px;height:6px;border-radius:9px;margin:0 1px}
+.sw{display:flex;gap:8px;flex-wrap:wrap}.sw button{width:74px;height:46px;border-radius:12px;border:2px solid var(--ln);font-size:11px;cursor:pointer}.sw button.on{border-color:var(--ac);outline:2px solid var(--ac)}
+.tg{width:44px;height:24px;border-radius:99px;background:var(--ln);border:0;position:relative;cursor:pointer;flex:none}.tg:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:9px;background:#fff;transition:.15s}.tg.on{background:var(--ac)}.tg.on:after{left:23px}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+
+header{background:linear-gradient(135deg,var(--ac),var(--ac2,var(--ac)));color:var(--on);border-radius:0 0 24px 24px;padding:16px 14px 14px;margin-bottom:8px}
+h1{color:var(--on);display:flex;align-items:center;gap:8px}
+.lg{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--on);color:var(--ac);font:800 17px Georgia,serif}
+header .btn.o{color:var(--on);border-color:var(--on)}
+#q{border:0;box-shadow:0 2px 8px #0002}
+.card{border-radius:18px;box-shadow:0 2px 10px #0000000f}
+.btn{border-radius:12px;background:linear-gradient(135deg,var(--ac),var(--ac2,var(--ac)))}.btn.o{background:none}.btn.d{background:var(--bd)}
+.st{padding:1px 9px;border-radius:99px;font-weight:700;font-size:11.5px;margin-right:6px}
+.st.Open{background:var(--ok);color:var(--on)}.st.Upcoming{background:var(--wn);color:#222}.st.Closed{background:var(--ln);color:var(--mu)}
+.tabs button.on{background:linear-gradient(135deg,var(--ac),var(--ac2,var(--ac)))}
+nav{border:0;border-radius:22px 22px 0 0;box-shadow:0 -4px 18px #0000001f}
+nav button.on i{background:var(--ac);color:var(--on);border-radius:99px;padding:2px 18px;width:fit-content;margin:0 auto 2px}
+.sw button{width:104px;height:60px;text-align:left;padding:6px 9px;display:flex;align-items:flex-end;font-weight:700}
+:root{--ac2:#3aa17e}
+:root[data-t=night]{--ac2:#22b8cf}:root[data-t=saffron]{--ac2:#f5a524}:root[data-t=ocean]{--ac2:#25b7c9}:root[data-t=rose]{--ac2:#f0644f}:root[data-t=violet]{--ac2:#6d8bff}:root[data-t=slate]{--ac2:#f08a3c}
+:root[data-t=aurora]{--bg:#0b1220;--cd:#141d33;--tx:#e6edff;--mu:#8fa0c4;--ac:#22d3ee;--ac2:#8b5cf6;--on:#04121c;--ln:#24304d;--ok:#4ade80;--bd:#ff7a90}
+:root[data-t=sunset]{--bg:#fff4ee;--cd:#fff;--tx:#3b1520;--mu:#8c5b5f;--ac:#f43f5e;--ac2:#f59e0b;--on:#fff;--ln:#f6d9cc}
+:root[data-t=emerald]{--bg:#ecfdf5;--cd:#fff;--tx:#062e22;--mu:#4b7a6a;--ac:#059669;--ac2:#0d9488;--on:#fff;--ln:#c9ecdc}
+:root[data-t=royal]{--bg:#eef2ff;--cd:#fff;--tx:#151a3d;--mu:#5b6194;--ac:#4338ca;--ac2:#2563eb;--on:#fff;--ln:#d4dafc}
+:root[data-t=carbon]{--bg:#000;--cd:#111;--tx:#f2f2f2;--mu:#9a9a9a;--ac:#ffd60a;--ac2:#ff9f0a;--on:#1a1300;--ln:#262626;--ok:#5be08f;--bd:#ff6b6b}
+:root[data-t=cherry]{--bg:#1a0b10;--cd:#26121a;--tx:#ffeaf0;--mu:#c493a2;--ac:#ff4d79;--ac2:#ff9a5a;--on:#2a0610;--ln:#40202c;--ok:#6fe0a5;--bd:#ff8a8a}
+.tb td,.tb th{text-align:center;padding:9px 5px;border:1px solid var(--ln)}.tb th{background:var(--ln)}
+.ic{width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;background:var(--ln);color:var(--tx);font-size:18px}.ic.b2{background:#03a9f4;color:#fff}
+.cl{max-height:4.7em;overflow:hidden}.cl.open{max-height:none}
+.btn.l{padding:14px 18px;font-size:16px;flex:1;border-radius:14px}
+.sh.big{height:94%;max-height:94%}
+body{font-family:var(--ff,'Trebuchet MS','Segoe UI',Roboto,sans-serif)}main,header,.sh{zoom:var(--z,1)}.seg{display:flex;background:var(--ln);border-radius:12px;padding:3px;margin:4px 0 10px}.seg button{flex:1;border:0;background:none;padding:9px 4px;border-radius:10px;cursor:pointer;color:var(--tx);font-weight:600;font-size:13.5px}.seg button.on{background:var(--cd);color:var(--ac);box-shadow:0 1px 4px #0003}#auth{position:fixed;inset:0;z-index:40;background:var(--bg);color:var(--tx);overflow:auto}.ah{background:linear-gradient(135deg,var(--ac),var(--ac2,var(--ac)));color:var(--on);padding:28px 16px;border-radius:0 0 26px 26px;display:flex;align-items:center;gap:8px}.ab{max-width:460px;margin:auto;padding:16px}#toast{z-index:60}.stp{display:flex;gap:10px;align-items:flex-start;padding:4px 0;color:var(--mu)}.stp.ok{color:var(--tx)}.dt{width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;background:var(--ln);color:var(--mu);font-size:12px;flex:none;margin-top:1px}.stp.ok .dt{background:var(--ok);color:var(--on)}#bc{font-weight:800}
+:root[data-t=neon]{--bg:#0a0a14;--cd:#14142a;--tx:#eafffb;--mu:#8fa9b8;--ac:#00f5d4;--ac2:#f15bb5;--on:#041413;--ln:#26264a;--ok:#00f5a0;--bd:#ff6b8b}
+:root[data-t=lavender]{--bg:#f5f0ff;--cd:#fff;--tx:#241a3d;--mu:#7a6c9c;--ac:#7c3aed;--ac2:#ec4899;--on:#fff;--ln:#e4d9fb}
+:root[data-t=peach]{--bg:#fff1ea;--cd:#fff;--tx:#3d1f14;--mu:#94685a;--ac:#ff6b4a;--ac2:#ffb347;--on:#fff;--ln:#f8d9cc}
+:root[data-t=forest]{--bg:#0f1a12;--cd:#182619;--tx:#e6f2e6;--mu:#8fae92;--ac:#7bd88f;--ac2:#d4e157;--on:#0c1f10;--ln:#26382a;--ok:#7bd88f;--bd:#ff8a80}
+:root[data-t=gold]{--bg:#14110a;--cd:#1e1a10;--tx:#f7efd8;--mu:#b3a67d;--ac:#e6b422;--ac2:#ffdf6e;--on:#201700;--ln:#352d17;--ok:#7ddc9a;--bd:#ff8a7a}
+:root[data-t=mint]{--bg:#ecfbf8;--cd:#fff;--tx:#0b2e2a;--mu:#4f8079;--ac:#0f9f8f;--ac2:#38bdf8;--on:#fff;--ln:#cbeee8}
+:root[data-t=midnight]{--bg:#0b1026;--cd:#131a3a;--tx:#e8ecff;--mu:#93a0d0;--ac:#5b8cff;--ac2:#22d3ee;--on:#05122e;--ln:#232c5c;--ok:#5ee0a5;--bd:#ff8080}
+:root[data-t=bubble]{--bg:#fff0f8;--cd:#fff;--tx:#3a1030;--mu:#9a5f8a;--ac:#ff4fa3;--ac2:#a855f7;--on:#fff;--ln:#f6d3ea}
+:root[data-t=sand]{--bg:#f4ede1;--cd:#fffaf0;--tx:#33291c;--mu:#8a7a62;--ac:#b7791f;--ac2:#d97706;--on:#fff;--ln:#e6dbc6}
+html{background:radial-gradient(900px 340px at 50% -80px,color-mix(in srgb,var(--ac) 18%,transparent),transparent) no-repeat,var(--bg)}body{background:transparent}
+body,.card,nav,header,input,select{transition:background .3s,color .3s,border-color .3s}
+header{position:relative;overflow:hidden;box-shadow:0 10px 30px -14px var(--ac)}header>*{position:relative}
+header:before{content:"";position:absolute;right:-36px;top:-46px;width:150px;height:150px;border-radius:50%;background:#ffffff26}
+header:after{content:"";position:absolute;left:-30px;bottom:-60px;width:120px;height:120px;border-radius:50%;background:#ffffff14}
+.card{border-radius:20px;box-shadow:0 8px 22px -14px #000a;animation:up .35s ease both}
+@keyframes up{from{opacity:0;transform:translateY(10px)}}
+.ipo{border-left:5px solid var(--ln)}.ipo.Open{border-left-color:var(--ok)}.ipo.Upcoming{border-left-color:var(--wn)}
+.ipo .g div:nth-child(4){grid-column:1/-1;background:color-mix(in srgb,var(--ok) 13%,transparent);border-radius:12px;padding:8px 12px}
+.ipo .g div:nth-child(4) b{font-size:18px}
+.tag.m{background:linear-gradient(135deg,var(--ac),var(--ac2,var(--ac)))}
+.btn{transition:transform .12s,filter .12s;box-shadow:0 6px 14px -8px var(--ac)}.btn:active{transform:scale(.96)}.btn:hover{filter:brightness(1.06)}.btn.o,.btn.d{box-shadow:none}
+h3{display:flex;align-items:center;gap:8px}h3:before{content:"";width:5px;height:16px;border-radius:9px;background:linear-gradient(var(--ac),var(--ac2,var(--ac)))}
+.tabs button,.seg{box-shadow:0 2px 6px -4px #0007}
+input:focus,select:focus{outline:0;border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 28%,transparent)}
+.bar{height:10px}.bar b{background:linear-gradient(90deg,var(--ac),var(--ac2,var(--ac)));border-radius:9px}
+nav{bottom:calc(10px + env(safe-area-inset-bottom,0px));width:calc(100% - 20px);padding-bottom:0;border:1px solid var(--ln);border-radius:26px;background:color-mix(in srgb,var(--cd) 88%,transparent);backdrop-filter:blur(14px);box-shadow:0 14px 34px -10px #000a}
+nav button{padding:9px 2px}nav button.on i{background:linear-gradient(135deg,var(--ac),var(--ac2,var(--ac)))}
+main{padding-bottom:104px}
+.sh{border-radius:28px 28px 0 0}.sh:before{content:"";display:block;width:44px;height:5px;border-radius:9px;background:var(--ln);margin:-6px auto 12px}
+.sw button{transition:transform .15s}.sw button:active{transform:scale(.94)}.sw button.on{transform:scale(1.04)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<header><h1><span class="lg">₹</span>Finance Freedom</h1><button class="btn o s" id="bl" onclick="bell()" aria-label="Notifications">🔔<span id="bc"></span></button><button class="btn o s" id="rf">Refresh</button><input id="q" type="search" placeholder="Search IPO, bid, account…"></header>
+<main id="m"><div id="ptr">Pull down to refresh</div><div id="v"></div></main>
+<div id="toast"></div>
+<nav id="nav"></nav>
+<script>
+const $=s=>document.querySelector(s),DAY=864e5;
+const day=o=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()+o*DAY};
+const LOCS={en:'en-IN',hi:'hi-IN',gu:'gu-IN'};const fd=t=>!t?'—':new Date(t).toLocaleDateString(LOCS[S.lang],{day:'2-digit',month:'short',year:'numeric'});
+const ft=t=>new Date(t).toLocaleString(LOCS[S.lang],{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+const R=n=>'₹'+Number(n).toLocaleString('en-IN',{maximumFractionDigits:2});
+let S={feed:[],snap:null,users:[],cur:0,d:{},sl:'both',fs:1,ff:'def',lang:'en',theme:matchMedia('(prefers-color-scheme:dark)').matches?'night':'light',accts:[],bids:[],notif:{open:true,close:true,allot:true,list:true,gmp:false,alertsOn:false},aNotify:{},seeded:false};
+try{const x=localStorage.getItem('ff1');if(x)S=Object.assign(S,JSON.parse(x))}catch(e){}
+const lsSave=()=>{try{if(S.cur)S.d[S.cur]={accts:S.accts,bids:S.bids,aNotify:S.aNotify,dels:S.dels||[]};localStorage.setItem('ff1',JSON.stringify(S))}catch(e){}};
+const save=()=>{lsSave();if(typeof syncSoon==='function')syncSoon()};
+const lg=()=>{save()};
+if(S.notif.bid===undefined)S.notif.bid=true;
+['sub','drhp','anchor'].forEach(k=>{if(S.notif[k]===undefined)S.notif[k]=true});if(!S.nv2){S.notif.gmp=true;S.nv2=1}
+if(!S.seeded){S.accts=[{id:1,name:'Self',upi:'self@upi',pan:'ABCDE1234F',at:Date.now(),up:Date.now()}];S.seeded=true;lg('Default account created');}
+// SAMPLE DATA (fictional companies) — replace with a live feed
+const mk=(n,ty,o,c,lo,hi,lot,sz,g,h,al,li,rg,su)=>({n,ty,o:day(o),c:day(c),lo,hi,lot,sz,g,h,al:day(al),li:day(li),rg,su,bs:[[2024,320,28,410],[2025,455,41,560],[2026,610,63,720]]});
+let IPOS=[Object.assign(mk('Vans Electroengineerings Ltd','SME',-1,2,112,118,1200,33.98,0,'₹0',5,7,'Bigshare Services',{r:1.47,n:.4,q:0}),{x:{sh:[804000,537600,403200,940800,146400,48000],ap:[0,162000,57600,104400,1387200,0],al2:[10,23,578],pre:8000000,list:'BSE SME',mm:'Hem Finlease Pvt.Ltd.',rgn:'Bigshare Services Pvt Ltd',lm:'Hem Securities Limited',
+fin:{a:[16.85,5.34,6.57],ti:[23.19,13.82,2.76],pat:[5.39,1.73,.02],eb:[7.23,2.48,.02],nw:[9.17,3.78,1.05],rs:[7.17,1.78,.05],bo:[2.55,1.2,5.17]},kpi:{ronw:[83.27,71.63,2.06],roce:[63.96,53.51,2.1],eps:[6.74,3.59,.05],pe:[17.51]},
+about:'VANS Electroengineerings Limited was incorporated in February 2022 and converted into a public limited company in 2026. It is an Indian engineering and technology company focused on electrical and power solutions for critical infrastructure, with expertise in switchgear, vacuum technology and railway electrification.',
+st:"<b>Niche Market Focus:</b> Focuses on Vacuum Circuit Breakers and Vacuum Interrupters for Indian Railways' 25kV traction requirements, supported by 10+ years of leadership experience.",
+rk:'<b>Stringent Quality &amp; Delivery Obligations:</b> Failure to meet prescribed quality, performance, technical specifications or delivery commitments may lead to claims, penalties and order cancellations.',
+addr:"Vans Electroengineerings Ltd.<br>Plot 17, SIDCO Women's Industrial Estate, Karuppur<br>Salem, Tamil Nadu, 636011<br>Phone: 9677114470<br>E-Mail: cs@vanselectroengineerings.com<br>Website: https://vanselectroengineerings.com/"}}),
+mk('Bharat Solar Systems','Mainboard',-1,2,210,222,67,850,48,'₹45-50',5,7,'KFin Technologies',{r:3.2,n:6.8,q:11.4}),
+mk('Nova Pharma Labs','Mainboard',0,3,140,148,101,520,22,'₹20-25',6,8,'Link Intime',{r:1.9,n:2.4,q:4.1}),
+mk('Kaveri Foods SME','SME',-1,1,88,93,1200,64,30,'₹28-32',4,6,'Bigshare Services',{r:24.5,n:41.2,q:0}),
+mk('UrbanNest Realty','Mainboard',4,6,300,315,47,1200,60,'₹55-65',10,12,'KFin Technologies',{r:0,n:0,q:0}),
+mk('Digitera Tech SME','SME',5,8,110,116,1000,48,12,'₹10-14',11,13,'Skyline Financial',{r:0,n:0,q:0}),
+mk('Prime Logistics','Mainboard',-9,-6,175,184,81,700,15,'₹12-18',-3,-1,'Link Intime',{r:8.6,n:14.2,q:32.5}),
+mk('Silverline Metals SME','SME',-8,-5,70,75,1600,40,-2,'₹-3-0',-2,0,'Purva Sharegistry',{r:9.9,n:12.1,q:0})];
+const st=i=>{const t=day(0);return t<i.o?'Upcoming':t<=i.c?'Open':'Closed'};
+const pr=i=>i.hi?Math.round(i.g/i.hi*1000)/10:0;
+let page='ipo',tab='Open',bt='All',q='',cm=new Date(),lastRef=Date.now();
+const toast=m=>{const t=$('#toast');t.textContent=m;tr(t);t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3200)};
+const alertUser=m=>{toast(m);if(S.notif.alertsOn&&window.Notification&&Notification.permission==='granted')try{new Notification('Finance Freedom',{body:m})}catch(e){}};
+const match=s=>!q||s.toLowerCase().includes(q.toLowerCase());
+const tg=(k,o)=>`<button class="tg ${o[k]?'on':''}" aria-label="${k}" onclick="tgl('${k}','${o===S.notif?'n':'a'}')"></button>`;
+window.tgl=(k,w)=>{if(w==='n'){S.notif[k]=!S.notif[k];if(k==='alertsOn'&&S.notif[k]&&window.Notification)Notification.requestPermission()}save();lg('Notification setting "'+k+'" '+(S.notif[k]?'on':'off'));go(page)};
+
+const slOk=i=>S.sl==='both'||(S.sl==='sme'?i.ty==='SME':i.ty==='Mainboard');
+const slicer=()=>`<div class="seg">${[['sme','SME'],['main','Mainboard'],['both','SME &amp; Mainboard']].map(([k,l])=>`<button class="${S.sl===k?'on':''}" onclick="setSl('${k}')">${l}</button>`).join('')}</div>`;
+window.setSl=k=>{S.sl=k;save();go(page)};
+function ipoCard(i){const s=st(i),p=pr(i);return`<div class="card ipo ${s}"><div class="row"><div class="b">${i.n}</div><span class="tag ${i.ty==='Mainboard'?'m':''}">${i.ty}</span></div>
+<div class="mu"><span class="st ${s}">${s}</span> ${fd(i.o)} – ${fd(i.c)}</div>
+<div class="g"><div><span>Price band</span>${R(i.lo)} – ${R(i.hi)}</div><div><span>Lot size</span>${i.lot} shares</div><div><span>Issue size</span>₹${i.sz} Cr</div><div><span>Live premium</span><b class="${i.g>=0?'pos':'neg'}">${R(i.g)} (${p}%)</b></div>
+<div><span>Last heard</span>${i.h}</div><div><span>GMP / lot (retail)</span>${R(i.g*i.lot)}</div><div><span>GMP / lot (HNI, ${i.ty==='SME'?2:14} lots)</span>${R(i.g*i.lot*(i.ty==='SME'?2:14))}</div><div><span>Allotment · Listing</span>${fd(i.al)} · ${fd(i.li)}</div></div>
+<div style="display:flex;gap:10px;margin-top:12px"><button class="btn o l" onclick="view('${i.n}')">View</button>${s==='Closed'?'':`<button class="btn l" onclick="apply('${i.n}')">Apply</button>`}</div></div>`}
+function ipoPage(){const l=IPOS.filter(i=>slOk(i)&&match(i.n+i.ty)&&(q||st(i)===tab));
+return`${slicer()}<div class="tabs">${['Open','Upcoming','Closed'].map(t=>`<button class="${tab===t&&!q?'on':''}" onclick="tab='${t}';go('ipo')">${t}</button>`).join('')}<button onclick="go('cal')">IPO calendar</button></div>${l.map(ipoCard).join('')||'<p class="mu">No IPO found.</p>'}<p class="mu">${LIVE?'Live data · '+SRC+' · updated '+ft(lastRef):'Sample data · live server not connected'}</p>`}
+const nf=n=>Number.isFinite(+n)?Math.round(n).toLocaleString('en-IN'):'—',f2=n=>Number.isFinite(+n)?(+n).toFixed(2):'—',tm2=(a,o)=>o?+f2(a/o):0;
+const tb=(h,r)=>`<div style="overflow-x:auto"><table class="tb"><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${r.map(a=>`<tr>${a.map(x=>`<td>${x}</td>`).join('')}</tr>`).join('')}</table></div>`;
+const sec=(t,b)=>`<div class="card"><div class="b" style="font-size:16px;margin-bottom:8px">${t}</div>${b}</div>`;
+const fac=(t,b)=>sec(t,`<div class="cl">${b}</div><div style="text-align:right"><button class="btn o s" onclick="const c=this.parentNode.previousElementSibling;c.classList.toggle('open');this.textContent=c.classList.contains('open')?'View Less':'View More'">View More</button></div>`);
+const lnk=u=>u&&u!=='—'?`<a href="${u.includes('@')?'mailto:'+u:/^\+?\d/.test(u)?'tel:'+u:u}" target="_blank" rel="noopener" style="color:var(--ac)">${u}</a>`:'—';
+const SM={'KFin Technologies':['https://ipostatus.kfintech.com/','—','—'],'Link Intime':['https://linkintime.co.in/MIPO/Ipoallotment.html','—','—'],'Bigshare Services':['https://ipo.bigshareonline.com/IPO_Status.html','+912262638200','ipo@bigshareonline.com']};
+function det(i){const x=i.x||{},sme=i.ty==='SME',per=i.hi*i.lot,lot=i.lot;
+const pc=sme?[['Anchor',27.92],['QIB',18.67],['HNI',14],['Individual',32.67],['Market Maker',5.08],['Employee',1.67]]:[['Anchor',30],['QIB',20],['HNI',15],['Individual',35]];
+const tot=Math.round(i.sz*1e7/i.hi/lot)*lot,sh=x.sh||pc.map(p=>Math.round(p[1]/100*tot/lot)*lot),T=sh.reduce((a,b)=>a+b,0),g=k=>{const j=pc.findIndex(p=>p[0]===k);return j<0?0:sh[j]};
+const hni=g('HNI'),ind=g('Individual'),qib=g('QIB'),emp=g('Employee'),mi=sme?2:1,ms=[mi*lot,(mi+1)*lot,(Math.floor(1e6/per)+1)*lot],sS=Math.floor(hni/3),bS=hni-sS;
+const lots=[Math.floor(ind/ms[0]),Math.floor(sS/ms[1]),Math.round(bS/ms[1])].map(v=>Number.isFinite(v)?v:0);
+const su=i.su,of=[qib,hni,bS,sS,ind,emp],tm=[su.q,su.n,su.n*.6,su.n*1.3,su.r,0],ap=x.ap||of.map((o,k)=>Math.round(o*tm[k])),N=['QIBs','HNIs','bHNI','sHNI','Individual','Employee'];
+const tof=of[0]+of[1]+of[4]+of[5],tap=ap[0]+ap[1]+ap[4]+ap[5];
+const bd=[['HNIs (10L+)',lots[2],x.al2?x.al2[0]:Math.round(lots[2]*tm[2])],['HNIs (3-10L)',lots[1],x.al2?x.al2[1]:Math.round(lots[1]*tm[3])],['Individual',lots[0],x.al2?x.al2[2]:Math.round(lots[0]*su.r)]];
+const y=[...i.bs].reverse(),fin=x.fin||{a:y.map(r=>r[3]),ti:y.map(r=>r[1]),pat:y.map(r=>r[2]),eb:y.map(r=>r[2]*1.35),nw:y.map(r=>r[3]*.55),rs:y.map(r=>r[3]*.41),bo:y.map(r=>r[3]*.15)};
+const pre=x.pre||Math.round(tot*2.8/lot)*lot,eps=fin.pat.map(p=>p*1e7/pre),kp=x.kpi||{ronw:fin.pat.map((p,k)=>p/fin.nw[k]*100),roce:fin.eb.map((e,k)=>e/(fin.nw[k]+fin.bo[k])*100),eps:eps,pe:[i.hi/eps[0]]};
+return{x,sme,pc,sh,T,tot,ms,lots,of,ap,N,tm,tof,tap,bd,fin,kp,pre};}
+window.view=n=>{const i=IPOS.find(z=>z.n===n),d=det(i),x=d.x,rg=SM[i.rg]||['—','—','—'],cr=v=>f2(v*i.hi/1e7),rows=d.N.map((a,k)=>[a,d.of[k],d.ap[k]]).filter(r=>r[1]>0);
+const yr=['Mar-26','Mar-25','Mar-24'],fr=(l,a,p)=>[l,...a.map(v=>v===''?'':f2(v)+(p||''))];
+sheet(`<div class="row"><h2 style="margin:0;font-size:19px">${i.n}</h2><span class="tag m">${i.ty}</span></div><div class="mu">${st(i)} · ${fd(i.o)} – ${fd(i.c)} · ${R(i.lo)} – ${R(i.hi)} · Lot ${i.lot}</div><div style="height:10px"></div>
+${sec(`<div class="row"><span>Live Subscription</span><span><button class="ic" onclick="refresh();view('${i.n}')" aria-label="Refresh">↻</button> <button class="ic b2" onclick="shr('${i.n}')" aria-label="Share">⤴</button></span></div>`,`<div class="mu" style="text-align:center">Last updated on ${ft(lastRef)}</div><div class="b" style="margin:10px 0 4px">Subscription Details (No. of Shares)</div>${tb(['Category','Offered','Applied','Times'],[...rows.map(r=>[r[0],nf(r[1]),nf(r[2]),tm2(r[2],r[1])]),['Total',nf(d.tof),nf(d.tap),tm2(d.tap,d.tof)]])}
+<div class="b" style="margin:12px 0 4px">Application-Wise Breakup</div>${tb(['Category','Reserved','Applied','Times'],d.bd.map(r=>[r[0],r[1],r[2],tm2(r[2],r[1])]))}
+<div class="b" style="margin:12px 0 4px">Subscription Demand (in ₹ crore)</div>${tb(['Category','Offered','Demand','Times'],[...rows.map(r=>[r[0],cr(r[1]),cr(r[2]),tm2(r[2],r[1])]),['Total',cr(d.tof),cr(d.tap),tm2(d.tap,d.tof)]])}`)}
+${sec('IPO Details',tb(['Detail','Value'],[['Total Issue Size',nf(d.T)+' shares (aggregating up to ₹'+f2(d.T*i.hi/1e7)+' Cr)'],['Fresh Issue',nf(d.T)+' shares (aggregating up to ₹'+f2(d.T*i.hi/1e7)+' Cr)'],['Face Value','₹10/- Per Share'],['Issue Type','Bookbuilding IPO'],['Listing At',x.list||(d.sme?'NSE SME':'BSE, NSE')],['Share Holding Pre Issue',nf(d.pre)+' shares'],['Share Holding Post Issue',nf(d.pre+d.T)+' shares'],...(d.sme?[['Reserved for Market Maker',nf(d.sh[4])+' shares (aggregating up to ₹'+f2(d.sh[4]*i.hi/1e7)+' Cr)'],['Market Maker',x.mm||'As per offer document']]:[])]))}
+${sec('Lot(s) Distribution',tb(['Category','Individual','sHNI','bHNI'],[['Min. Share',...d.ms.map(nf)],['Min. Amt.',...d.ms.map(v=>nf(v*i.hi))],['Total Lots',...d.lots]]))}
+${sec('IPO Reservation',tb(['Category','Shares Offered','%'],[...d.pc.map((p,k)=>[p[0].toUpperCase()==='INDIVIDUAL'?'INDIVIDUAL':p[0],nf(d.sh[k]),f2(d.sh[k]/d.T*100)+'%']),['Total',nf(d.T),'100.00%']]))}
+${sec('Key Performance Indicators (KPI)',tb(['KPI',...yr],[fr('RONW',d.kp.ronw,'%'),fr('ROCE',d.kp.roce,'%'),fr('EPS (BASIC)',d.kp.eps),fr('P/E Pre IPO',[...d.kp.pe,'',''].slice(0,3))]))}
+${sec('Company Financial <span class="mu">(In ₹ Crore)</span>',tb(['Period Ended',...yr],[fr('Assets',d.fin.a),fr('Total Income',d.fin.ti),fr('Profit After Tax',d.fin.pat),fr('EBITDA',d.fin.eb),fr('NET Worth',d.fin.nw),fr('Reserves and Surplus',d.fin.rs),fr('Total Borrowing',d.fin.bo)]))}
+${sec('Comparison with Industry Peers','<i class="mu">*Company does not have any peer group company for comparison with Industry Peer.</i>')}
+${sec('About Company',x.about||i.n+' — company profile loads with live data (sample).')}
+${fac('Strength Factors',x.st||'<b>Growing business:</b> Revenue and profit have grown year on year (sample data).')}
+${fac('Risk Factors',x.rk||'<b>Market risk:</b> Listing gains depend on subscription and market conditions (sample data).')}
+${sec('Registrar',`<div class="b"><a href="${rg[0]}" target="_blank" rel="noopener" style="color:var(--ac)">${x.rgn||i.rg}</a></div><div class="mu">Website: ${lnk(rg[0])}</div><div class="mu">Phone: ${lnk(rg[1])}</div><div class="mu">Email: ${lnk(rg[2])}</div>`)}
+${sec('Lead Manager(s)','<div>1. '+(x.lm||'Lead manager as per offer document')+'</div>')}
+${sec('Company Address',x.addr||'<span class="mu">Address loads with live data (sample).</span>')}
+<div class="card"><div style="display:flex;flex-direction:column;gap:8px">${[['DRHP/RHP File','#8a63ff'],['CAPITAL STRUCTURE','#b9bbbe'],['ANCHOR File','#4caf50']].map(([t,c])=>`<div style="display:flex;gap:8px"><button class="btn l" style="background:${c};color:#fff" onclick="docOpen('${i.n}','${t}')">${t}</button><button class="ic b2" style="width:46px;height:46px;flex:none" onclick="shr('${i.n} — ${t}')" aria-label="Share">⤴</button></div>`).join('')}</div></div>
+<select onchange="toast('Documents in '+this.value+' load with live data')"><option>English</option><option>Hindi</option></select>
+<div style="display:flex;gap:10px;margin-top:14px"><button class="btn o l" onclick="closeS()">Back</button>${st(i)==='Closed'?'':`<button class="btn l" onclick="apply('${i.n}')">Apply</button>`}</div>`,1)};
+window.shr=t=>{const m=t+' — Finance Freedom';if(navigator.share)navigator.share({title:t,text:m}).catch(()=>{});else{try{navigator.clipboard.writeText(m);toast('Copied to clipboard')}catch(e){toast('Sharing is not supported here')}}};
+function sheet(h,big){closeS();const o=document.createElement('div');o.className='ov';o.id='ov';o.onclick=e=>{if(e.target===o)closeS()};o.innerHTML=`<div class="sh${big?' big':''}">${h}</div>`;document.body.appendChild(o);tr(o)}
+window.closeS=()=>{const o=$('#ov');if(o)o.remove()};
+const CL={ind:'Individual',shni:'sHNI',bhni:'bHNI'};
+window.apply=n=>{const i=IPOS.find(x=>x.n===n);if(!S.accts.length){toast('Add an account first (Account tab)');return}
+sheet(`<h2 style="margin:0">Apply: ${n}</h2><div class="mu">Price band ${R(i.lo)} – ${R(i.hi)} · Lot ${i.lot} shares</div>
+<label>Category</label><select id="cat" onchange="catSet('${n}')"><option value="ind">Individual</option><option value="shni">sHNI (₹2L – ₹10L)</option><option value="bhni">bHNI (above ₹10L)</option></select>
+<label class="row" style="justify-content:flex-start;gap:8px;color:var(--tx)"><input type="checkbox" id="co" style="width:auto" checked onchange="upd('${n}',0)"> Auto cut-off (bid at upper price)</label>
+<label>Price per share</label><input id="pr" type="number" step="0.05" oninput="upd('${n}',0)">
+<label>Lot number</label><input id="lt" type="number" min="1" value="1" oninput="upd('${n}',0)"><div class="mu" id="am"></div>
+<label>Apply on (date &amp; time)</label><input id="dt" type="datetime-local"><div class="mu">Leave empty to apply right now.</div>
+<label class="row" style="justify-content:flex-start;gap:8px;color:var(--tx);margin-top:14px"><input type="checkbox" id="tc" style="width:auto"> I agree to the terms and conditions</label>
+<h3>Investor details</h3><select id="ac" onchange="upd('${n}',0)">${S.accts.map(a=>`<option value="${a.id}">${a.name}</option>`).join('')}</select><div class="card" id="inv" style="margin-top:8px"></div>
+<div class="row" style="margin-top:14px"><button class="btn o" onclick="closeS()">Cancel</button><button class="btn" onclick="doApply('${n}')">Submit bid</button></div>`,1);catSet(n)};
+window.catSet=n=>{const c=$('#cat').value,o=$('#co');o.checked=c==='ind';o.disabled=c!=='ind';upd(n,1)};
+window.upd=(n,rs)=>{const i=IPOS.find(x=>x.n===n),c=$('#cat').value,o=$('#co'),p=$('#pr'),l=$('#lt'),per=i.hi*i.lot,rm=Math.max(1,Math.floor(2e5/per)),sm=Math.max(rm+1,Math.floor(1e6/per)),lim=c==='ind'?[1,rm]:c==='shni'?[rm+1,sm]:[sm+1,sm*5];
+l.min=lim[0];l.max=lim[1];if(rs)l.value=lim[0];
+if(o.checked){p.value=i.hi;p.disabled=true}else{p.disabled=false;if(rs||!p.value)p.value=i.hi}
+$('#am').textContent='Allowed '+lim[0]+'–'+lim[1]+' lots · Amount '+R((+p.value||i.hi)*i.lot*(+l.value||0));
+const a=S.accts.find(x=>x.id==$('#ac').value);$('#inv').innerHTML=`<div class="b">${a.name}</div><div class="mu">PAN ${a.pan||'not added'} · Demat ${a.demat||'not added'}</div><div class="mu">UPI ${a.upi}</div>`};
+window.doApply=n=>{const i=IPOS.find(x=>x.n===n),l=$('#lt'),co=$('#co').checked,p=co?i.hi:+$('#pr').value,acc=S.accts.find(x=>x.id==$('#ac').value);
+if(!(+l.value>=+l.min&&+l.value<=+l.max)){toast('Lots must be between '+l.min+' and '+l.max+' for this category');return}
+if(!(p>=i.lo&&p<=i.hi)){toast('Price must be within '+R(i.lo)+' – '+R(i.hi));return}
+if(!$('#tc').checked){toast('Please agree to the terms and conditions');return}
+const v=$('#dt').value,at=v?new Date(v).getTime():Date.now();
+if(at>i.c+DAY-1){toast('Chosen time is after this IPO closes');return}
+S.bids.unshift({id:Date.now(),n,acc:acc.id,cat:$('#cat').value,price:p,cutoff:co,lots:+l.value,at,status:at>Date.now()?'Pending':'Success',made:Date.now(),up:Date.now()});
+if(S.bids[0].status==='Success')startFlow(S.bids[0]);
+lg('Bid submitted: '+n+' ('+CL[$('#cat').value]+')');closeS();alertUser(at>Date.now()?'Bid scheduled for '+ft(at):'Bid placed for '+n);go('bids')};
+function bidsPage(){const l=S.bids.filter(b=>match(b.n)&&slOk(IPOS.find(x=>x.n===b.n)||{ty:'Mainboard'})&&(bt==='All'||b.status===bt));
+return`${slicer()}<div class="tabs">${['All','Success','Pending','Failed','Cancelled'].map(t=>`<button class="${bt===t?'on':''}" onclick="bt='${t}';go('bids')">${t}</button>`).join('')}</div>${l.map(b=>{const a=S.accts.find(x=>x.id===b.acc);return`<div class="card"><div class="row"><div class="b">${b.n}</div><span class="tag ${b.status==='Success'?'m':''}">${b.status}</span></div>
+<div class="mu">${a?a.name:'Deleted account'} · ${CL[b.cat]||'Individual'} · ${b.lots} lot(s)${b.price?' @ '+R(b.price)+(b.cutoff?' (cut-off)':''):''}</div><div class="mu">Apply at ${ft(b.at)}</div><div class="mu">Created ${ft(b.made)} · Updated ${ft(b.up)}</div>
+${b.status==='Success'&&b.p0?tl(b):''}
+${(()=>{const i=IPOS.find(x=>x.n===b.n),open=!i||day(0)<=i.c;return b.status==='Pending'||b.status==='Success'?(open?`<button class="btn d l" style="margin-top:10px;width:100%" onclick="cancelBid(${b.id})">Cancel bid</button>`:'<div class="mu" style="margin-top:8px">Bidding closed. This bid can no longer be cancelled.</div>'):b.status==='Cancelled'?`<div class="mu" style="margin-top:8px">Cancelled ${ft(b.cx)}</div>`:''})()}</div>`}).join('')||'<p class="mu">No bids here yet. Use Apply on an IPO.</p>'}<p class="mu">You can cancel a bid any time until the IPO closes.</p>`}
+window.cancelBid=id=>{const b=S.bids.find(x=>x.id===id);if(!b||!confirm('Cancel bid for '+b.n+'?'))return;b.status='Cancelled';b.cx=Date.now();b.up=b.cx;save();toast('Bid cancelled');go('bids')};
+function allotPage(){const l=IPOS.filter(i=>slOk(i)&&match(i.n));const sel=window._al||(l[0]&&l[0].n);const i=l.find(x=>x.n===sel)||l[0];if(!i)return'<p class="mu">No IPO found.</p>';
+const done=day(0)>=i.al,bs=S.bids.filter(b=>b.n===i.n&&(b.status==='Success'||b.status==='Pending'));
+const one=b=>b.status==='Pending'?'Bid pending':!done?'Awaiting allotment':((b.id*7+i.n.length)%10<3?'Allotted':'Not allotted');
+const ap=new Set(bs.filter(b=>b.status==='Success').map(b=>b.acc)),al=new Set(bs.filter(b=>one(b)==='Allotted').map(b=>b.acc));
+const box=(a,t)=>`<div class="card" style="flex:1;text-align:center;margin:0"><div class="b" style="font-size:24px">${a}</div><div class="mu">${t}</div></div>`;
+return`<div style="display:flex;gap:8px;margin:4px 0 12px">${box(S.accts.length,'Total accounts')}${box(ap.size,'Applied')}${box(al.size,'Allotted')}</div>
+${slicer()}<label>Company</label><select onchange="_al=this.value;go('allot')">${l.map(x=>`<option ${x.n===i.n?'selected':''}>${x.n}</option>`).join('')}</select>
+<div class="card" style="margin-top:12px"><div class="b">${i.n}</div><div class="mu">Registrar: ${i.rg}</div><div class="g"><div><span>Allotment date</span>${fd(i.al)}</div><div><span>Listing date</span>${fd(i.li)}</div><div><span>Status</span>${done?'Allotment out':'Awaiting allotment'}</div></div>
+<div class="row" style="margin-top:12px"><span>Notify me on allotment</span><button class="tg ${S.aNotify[i.n]?'on':''}" onclick="aN('${i.n}')" aria-label="notify"></button></div>
+${S.aNotify[i.n]?`<div class="mu">Alert set ${ft(S.aNotify[i.n])}</div>`:''}</div>
+<h3>Applied accounts</h3>${bs.map(b=>{const a=S.accts.find(x=>x.id===b.acc),s=one(b);return`<div class="card"><div class="row"><div class="b">${a?a.name:'Deleted account'}</div><span class="tag ${s==='Allotted'?'m':''}">${s}</span></div><div class="mu">${CL[b.cat]||'Individual'} · ${b.lots} lot(s) · Applied ${ft(b.made)}</div></div>`}).join('')||'<p class="mu">No account has applied for this IPO yet.</p>'}
+<p class="mu">Allotment results are a demo until a live registrar feed is connected.</p>`}
+window.aN=n=>{if(S.aNotify[n])delete S.aNotify[n];else S.aNotify[n]=Date.now();lg('Allotment alert toggled: '+n);save();if(S.aNotify[n])alertUser('You will be notified for '+n+' allotment');go('allot')};
+function calPage(){const y=cm.getFullYear(),m=cm.getMonth(),f=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate(),ev=[];
+IPOS.filter(slOk).forEach(i=>[['Opens',i.o,'var(--ok)'],['Closes',i.c,'var(--bd)'],['Allotment',i.al,'var(--wn)'],['Listing',i.li,'var(--ac)']].forEach(([k,t,c])=>{if(match(i.n))ev.push({d:new Date(t).toDateString(),k,n:i.n,c,t})}));
+let h=`${slicer()}<div class="row"><button class="btn o s" onclick="cm=new Date(${y},${m-1},1);go('cal')">‹</button><b>${cm.toLocaleString(LOCS[S.lang],{month:'long',year:'numeric'})}</b><button class="btn o s" onclick="cm=new Date(${y},${m+1},1);go('cal')">›</button></div><div class="cal" style="margin-top:8px">${'SMTWTFS'.split('').map(d=>`<div class="mu">${d}</div>`).join('')}${'<div></div>'.repeat(f)}`;
+for(let d=1;d<=n;d++){const ds=new Date(y,m,d).toDateString(),e=ev.filter(x=>x.d===ds);h+=`<div class="d ${ds===new Date().toDateString()?'t':''}">${d}<br>${e.map(x=>`<span class="dot" style="background:${x.c}"></span>`).join('')}</div>`}
+const list=ev.filter(x=>{const d=new Date(x.t);return d.getMonth()===m&&d.getFullYear()===y}).sort((a,b)=>a.t-b.t);
+return h+`</div><h3>This month</h3>${list.map(x=>`<div class="row card"><span><span class="dot" style="background:${x.c}"></span> ${x.n}</span><span class="mu">${x.k} · ${fd(x.t)}</span></div>`).join('')||'<p class="mu">No IPO events this month.</p>'}`}
+const THEMES=[['light','Paper','#f6f4ef','#0f7a4d',0],['night','Night','#0e1512','#3ddc97',1],['saffron','Saffron','#fff7ec','#e2731b',0],['ocean','Ocean','#eaf4f8','#0b7fa8',0],['rose','Rose','#fbeff2','#c2295a',0],['violet','Violet','#17132a','#a78bfa',1],['slate','Slate','#1c1f26','#f4b740',1],['aurora','Aurora','#0b1220','#22d3ee',1],['sunset','Sunset','#fff4ee','#f43f5e',0],['emerald','Emerald','#ecfdf5','#059669',0],['royal','Royal','#eef2ff','#4338ca',0],['carbon','Carbon','#000000','#ffd60a',1],['cherry','Cherry','#1a0b10','#ff4d79',1],['neon','Neon','#0a0a14','#00f5d4',1],['lavender','Lavender','#f5f0ff','#7c3aed',0],['peach','Peach','#fff1ea','#ff6b4a',0],['forest','Forest','#0f1a12','#7bd88f',1],['gold','Gold Luxe','#14110a','#e6b422',1],['mint','Mint','#ecfbf8','#14b8a6',0],['midnight','Midnight','#0b1026','#5b8cff',1],['bubble','Bubblegum','#fff0f8','#ff4fa3',0],['sand','Sand','#f4ede1','#b7791f',0]];
+function setPage(){const N=S.notif,sec=window._sec;
+if(sec==='acc')return`<h3 style="margin-top:0">Accounts</h3><button class="btn s" onclick="acForm()">Add account</button><div style="height:10px"></div>${S.accts.filter(a=>match(a.name+a.upi)).map(a=>`<div class="card"><div class="b">${a.name}</div><div class="mu">${a.upi} · PAN ${a.pan}</div><div class="mu">Demat: ${a.demat||'not added'}</div><div class="mu">Added ${ft(a.at)} · Edited ${ft(a.up)}</div><div class="row" style="margin-top:8px;justify-content:flex-start"><button class="btn o s" onclick="acForm(${a.id})">Edit</button><button class="btn d s" onclick="acDel(${a.id})">Delete</button></div></div>`).join('')||'<p class="mu">No accounts.</p>'}`;
+if(sec==='n')return`<button class="btn o s" onclick="_sec=0;go('set')">‹ Settings</button><h3>Notification settings</h3><div class="card">${[['alertsOn','Allow device alerts'],['bid','Bid status updates'],['sub','Live subscription updates'],['drhp','DRHP/RHP filed'],['anchor','Anchor list released'],['open','IPO opening'],['close','IPO closing soon'],['allot','Allotment status'],['list','Listing day'],['gmp','Big GMP changes']].map(([k,l])=>`<div class="row" style="padding:8px 0"><span>${l}</span>${tg(k,N)}</div>`).join('')}</div><p class="mu">Alerts appear in-app and, if allowed, on your device.</p>`;
+if(sec==='t')return`<button class="btn o s" onclick="_sec=0;go('set')">‹ Settings</button><h3>Theme</h3><div class="sw">${THEMES.map(t=>`<button class="${S.theme===t[0]?'on':''}" style="background:linear-gradient(135deg,${t[2]} 55%,${t[3]} 55%);color:${t[4]?'#fff':'#222'}" onclick="setT('${t[0]}')">${t[1]}</button>`).join('')}</div>`;
+const bk='<button class="btn o s" onclick="_sec=0;go(\'set\')">‹ Settings</button>',box=(a,t)=>`<div class="card" style="flex:1 1 44%;text-align:center;margin:0"><div class="b" style="font-size:22px">${a}</div><div class="mu">${t}</div></div>`;
+if(sec==='p'){const u=cur()||{via:[]};return`${bk}<h3>My profile</h3><div class="card"><div class="b" style="font-size:18px">${u.name||''}</div><div class="g"><div><span>Email</span>${u.email||''}</div><div><span>Login method</span>Password</div><div><span>Registered</span>${u.regAt?ft(u.regAt):''}</div><div><span>Last login</span>${u.lastLogin?ft(u.lastLogin):''}</div></div></div><button class="btn o l" style="width:100%;margin-bottom:10px" onclick="pwForm()">Change password</button><button class="btn d l" style="width:100%" onclick="logout()">Logout</button>`}
+if(sec==='u')return`${bk}<h3>Registered users</h3>${S.users.filter(u=>match(u.name+(u.email||u.mobile||''))).map(u=>{const d=uData(u),ap=d.bids.filter(b=>b.status==='Success'),al=ap.filter(b=>alSt(b)==='Allotted');return`<div class="card"><div class="row"><div class="b">${u.name}</div>${u.id===S.cur?'<span class="tag m">You</span>':''}</div><div class="mu">${u.email||('+91 '+u.mobile)}</div><div class="g"><div><span>Registered</span>${ft(u.regAt)}</div><div><span>Last login</span>${ft(u.lastLogin)}</div><div><span>Accounts</span>${d.accts.length}</div><div><span>Applied</span>${ap.length}</div><div><span>Allotted</span>${al.length}</div></div></div>`}).join('')||'<p class="mu">No users.</p>'}<p class="mu">Users are stored on this device only.</p>`;
+if(sec==='as'){const bs=S.bids.filter(b=>(b.status==='Success'||b.status==='Pending')&&match(b.n)&&slOk(IPOS.find(x=>x.n===b.n)||{ty:'Mainboard'})),c=k=>bs.filter(b=>alSt(b)===k).length;
+return`${bk}<h3>Allotment status</h3>${slicer()}<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">${box(bs.filter(b=>b.status==='Success').length,'Applied')}${box(c('Allotted'),'Allotted')}${box(c('Not allotted'),'Not allotted')}${box(c('Awaiting allotment'),'Awaiting allotment')}</div>${bs.map(b=>{const a=S.accts.find(x=>x.id===b.acc),t=alSt(b);return`<div class="card"><div class="row"><div class="b">${b.n}</div><span class="tag ${t==='Allotted'?'m':''}">${t}</span></div><div class="mu">${a?a.name:'Deleted account'} · ${CL[b.cat]||'Individual'} · ${b.lots} lot(s)</div></div>`}).join('')||'<p class="mu">No applied bids yet.</p>'}`}
+const opt=(it,cur,fn)=>it.map(([k,l,sty])=>`<div class="card row" tabindex="0" style="cursor:pointer;${sty||''}" onclick="${fn}('${k}')"><span>${l}</span><span class="b" style="color:var(--ac)">${String(cur)===String(k)?'✓':''}</span></div>`).join('');
+if(sec==='f')return`<button class="btn o s" onclick="_sec=0;go('set')">‹ Settings</button><h3>Font size</h3>${opt([['0.9','Small'],['1','Medium'],['1.15','Large'],['1.3','Extra large']],S.fs,'setF')}`;
+if(sec==='y')return`<button class="btn o s" onclick="_sec=0;go('set')">‹ Settings</button><h3>Font style</h3>${opt([['def','Default','font-family:'+FF.def],['serif','Serif','font-family:'+FF.serif],['clean','Clean','font-family:'+FF.clean],['wide','Wide','font-family:'+FF.wide],['type','Typewriter','font-family:'+FF.type]],S.ff,'setY')}`;
+if(sec==='l')return`<button class="btn o s" onclick="_sec=0;go('set')">‹ Settings</button><h3>Language</h3>${opt([['en','English'],['hi','हिन्दी'],['gu','ગુજરાતી']],S.lang,'setL')}`;
+return`<h3 style="margin-top:0">Settings</h3>${[['My profile','p'],['Registered users','u'],['Allotment status','as'],['Notification settings','n'],['Theme','t'],['Font size','f'],['Font style','y'],['Language','l']].map(([l,k])=>`<div class="card row" onclick="_sec='${k}';go('set')" style="cursor:pointer"><span>${l}</span><span>›</span></div>`).join('')}<div class="card row" onclick="go('cal')" style="cursor:pointer"><span>IPO calendar</span><span>›</span></div>`}
+window.setT=t=>{S.theme=t;document.documentElement.dataset.t=t;lg('Theme: '+t);save();go('set')};
+window.acForm=id=>{const a=S.accts.find(x=>x.id===id)||{name:'',upi:'',pan:'',demat:''};sheet(`<h2 style="margin:0">${id?'Edit':'Add'} account</h2><label>Name</label><input id="an" value="${a.name}"><label>UPI ID</label><input id="au" value="${a.upi}"><label>PAN</label><input id="ap" value="${a.pan}" maxlength="10"><label>Demat account number (DP ID + Client ID)</label><input id="ad" value="${a.demat||''}" maxlength="16" inputmode="text"><div class="row" style="margin-top:14px"><button class="btn o" onclick="closeS()">Cancel</button><button class="btn" onclick="acSave(${id||0})">Save account</button></div>`)};
+window.acSave=id=>{const n=$('#an').value.trim(),u=$('#au').value.trim(),p=$('#ap').value.trim().toUpperCase(),dm=$('#ad').value.trim().toUpperCase();if(!n||!u){toast('Name and UPI ID are required');return}
+if(id){Object.assign(S.accts.find(x=>x.id===id),{name:n,upi:u,pan:p,demat:dm,up:Date.now()});lg('Account edited: '+n)}else{S.accts.push({id:Date.now(),name:n,upi:u,pan:p,demat:dm,at:Date.now(),up:Date.now()});lg('Account added: '+n)}save();closeS();go('acc')};
+window.acDel=id=>{const a=S.accts.find(x=>x.id===id);if(!confirm('Delete account '+a.name+'?'))return;S.accts=S.accts.filter(x=>x.id!==id);(S.dels=S.dels||[]).push(id);lg('Account deleted: '+a.name);save();go('acc')};
+const FF={def:"'Trebuchet MS','Segoe UI',Roboto,sans-serif",serif:"Georgia,'Times New Roman',serif",clean:"system-ui,Roboto,Arial,sans-serif",wide:"Verdana,Geneva,sans-serif",type:"'Courier New',monospace"};
+function applyPrefs(){const r=document.documentElement;r.style.setProperty('--z',S.fs);r.style.setProperty('--ff',FF[S.ff]||FF.def);r.lang=S.lang}
+window.setF=v=>{S.fs=+v;save();applyPrefs();go('set')};window.setY=v=>{S.ff=v;save();applyPrefs();go('set')};window.setL=v=>{S.lang=v;save();applyPrefs();go('set')};
+const W=(a)=>{const h={},g={};for(const k in a){h[k]=a[k][0];g[k]=a[k][1]}return{hi:h,gu:g}};
+const TR=W({'Refresh':['रिफ्रेश','રિફ્રેશ'],'Account':['खाता','ખાતું'],'Bids':['बोलियाँ','બિડ'],'Allotment':['आवंटन','ફાળવણી'],'Settings':['सेटिंग्स','સેટિંગ્સ'],'Calendar':['कैलेंडर','કેલેન્ડર'],'Open':['खुला','ખુલ્લું'],'Upcoming':['आगामी','આગામી'],'Closed':['बंद','બંધ'],'IPO calendar':['IPO कैलेंडर','IPO કેલેન્ડર'],'View':['देखें','જુઓ'],'Apply':['आवेदन करें','અરજી કરો'],'Mainboard':['मेनबोर्ड','મેઇનબોર્ડ'],'SME & Mainboard':['SME और मेनबोर्ड','SME અને મેઇનબોર્ડ'],'Email':['ईमेल','ઈમેલ'],'Forgot password?':['पासवर्ड भूल गए?','પાસવર્ડ ભૂલી ગયા?'],'Send reset link':['रीसेट लिंक भेजें','રીસેટ લિંક મોકલો'],'Back to login':['लॉगिन पर वापस','લૉગિન પર પાછા'],'Enter your email and we will send you a link to reset your password.':['अपना ईमेल दर्ज करें, हम पासवर्ड रीसेट का लिंक भेजेंगे।','તમારો ઈમેલ દાખલ કરો, અમે પાસવર્ડ રીસેટ લિંક મોકલીશું.'],'Live subscription updates':['लाइव सब्सक्रिप्शन अपडेट','લાઇવ સબ્સ્ક્રિપ્શન અપડેટ'],'DRHP/RHP filed':['DRHP/RHP दाखिल','DRHP/RHP ફાઇલ થયું'],'Anchor list released':['एंकर सूची जारी','એન્કર યાદી જાહેર'],'Password':['पासवर्ड','પાસવર્ડ'],'Confirm password':['पासवर्ड की पुष्टि करें','પાસવર્ડની ખાતરી કરો'],'Show password':['पासवर्ड दिखाएं','પાસવર્ડ બતાવો'],'Create account':['खाता बनाएं','ખાતું બનાવો'],'Save password':['पासवर्ड सहेजें','પાસવર્ડ સાચવો'],'Change password':['पासवर्ड बदलें','પાસવર્ડ બદલો'],'Current password':['वर्तमान पासवर्ड','હાલનો પાસવર્ડ'],'New password':['नया पासवर्ड','નવો પાસવર્ડ'],'Login method':['लॉगिन का तरीका','લૉગિન રીત'],'Set a password':['पासवर्ड सेट करें','પાસવર્ડ સેટ કરો'],'Submitted to exchange':['एक्सचेंज को भेजा गया','એક્સચેન્જને સબમિટ કર્યું'],'Request accepted by sponsor bank':['स्पॉन्सर बैंक ने अनुरोध स्वीकार किया','સ્પોન્સર બેંકે વિનંતી સ્વીકારી'],'Request accepted by client':['क्लाइंट ने अनुरोध स्वीकार किया','ક્લાયન્ટે વિનંતી સ્વીકારી'],'Notifications':['सूचनाएं','સૂચનાઓ'],'No notifications yet.':['अभी कोई सूचना नहीं।','હજી કોઈ સૂચના નથી.'],'Bid status updates':['बोली स्थिति अपडेट','બિડ સ્થિતિ અપડેટ'],'Register':['रजिस्टर करें','રજિસ્ટર કરો'],'Login':['लॉगिन','લૉગિન'],'Full name':['पूरा नाम','પૂરું નામ'],'Mobile number':['मोबाइल नंबर','મોબાઇલ નંબર'],'Send OTP via':['OTP इसके माध्यम से भेजें','OTP આના દ્વારા મોકલો'],'Send OTP':['OTP भेजें','OTP મોકલો'],'Verify & continue':['सत्यापित करें और आगे बढ़ें','ચકાસો અને આગળ વધો'],'Resend OTP':['OTP दोबारा भेजें','OTP ફરી મોકલો'],'Change number':['नंबर बदलें','નંબર બદલો'],'Enter the 6-digit OTP':['6 अंकों का OTP दर्ज करें','6 અંકનો OTP દાખલ કરો'],'My profile':['मेरी प्रोफ़ाइल','મારી પ્રોફાઇલ'],'Registered users':['पंजीकृत उपयोगकर्ता','નોંધાયેલ વપરાશકર્તાઓ'],'Logout':['लॉग आउट','લૉગ આઉટ'],'Verified via':['सत्यापन माध्यम','ચકાસણી માધ્યમ'],'Registered':['पंजीकरण','નોંધણી'],'Last login':['अंतिम लॉगिन','છેલ્લું લૉગિન'],'You':['आप','તમે'],'Users are stored on this device only.':['उपयोगकर्ता केवल इसी डिवाइस पर सहेजे जाते हैं।','વપરાશકર્તાઓ ફક્ત આ ડિવાઇસ પર સંગ્રહિત છે.'],'Allotment status':['आवंटन स्थिति','ફાળવણીની સ્થિતિ'],'No applied bids yet.':['अभी कोई आवेदित बोली नहीं है।','હજી કોઈ અરજી કરેલ બિડ નથી.'],
+'Price band':['प्राइस बैंड','પ્રાઇસ બેન્ડ'],'Lot size':['लॉट साइज़','લોટ સાઇઝ'],'Issue size':['इश्यू साइज़','ઇશ્યૂ સાઇઝ'],'Live premium':['लाइव प्रीमियम','લાઇવ પ્રીમિયમ'],'Last heard':['आखिरी सुना गया','છેલ્લે સાંભળેલ'],'GMP / lot (retail)':['GMP / लॉट (रिटेल)','GMP / લોટ (રિટેલ)'],'GMP / lot (HNI, 14 lots)':['GMP / लॉट (HNI, 14 लॉट)','GMP / લોટ (HNI, 14 લોટ)'],'GMP / lot (HNI, 2 lots)':['GMP / लॉट (HNI, 2 लॉट)','GMP / લોટ (HNI, 2 લોટ)'],'Allotment · Listing':['आवंटन · लिस्टिंग','ફાળવણી · લિસ્ટિંગ'],
+'No IPO found.':['कोई IPO नहीं मिला।','કોઈ IPO મળ્યો નથી.'],'All':['सभी','બધા'],'Success':['सफल','સફળ'],'Pending':['लंबित','બાકી'],'Failed':['विफल','નિષ્ફળ'],'Cancelled':['रद्द','રદ'],'Cancel bid':['बोली रद्द करें','બિડ રદ કરો'],'Cancel':['रद्द करें','રદ કરો'],'Close':['बंद करें','બંધ કરો'],'Back':['वापस','પાછળ'],'Submit bid':['बोली जमा करें','બિડ સબમિટ કરો'],
+'No bids here yet. Use Apply on an IPO.':['यहाँ अभी कोई बोली नहीं है। किसी IPO पर आवेदन करें।','અહીં હજી કોઈ બિડ નથી. કોઈ IPO પર અરજી કરો.'],'You can cancel a bid any time until the IPO closes.':['IPO बंद होने तक आप कभी भी बोली रद्द कर सकते हैं।','IPO બંધ થાય ત્યાં સુધી તમે ગમે ત્યારે બિડ રદ કરી શકો છો.'],'Bidding closed. This bid can no longer be cancelled.':['बोली बंद हो चुकी है। यह बोली अब रद्द नहीं की जा सकती।','બિડિંગ બંધ થઈ ગયું છે. આ બિડ હવે રદ કરી શકાતી નથી.'],
+'Company':['कंपनी','કંપની'],'Total accounts':['कुल खाते','કુલ ખાતા'],'Applied':['आवेदित','અરજી કરેલ'],'Allotted':['आवंटित','ફાળવાયેલ'],'Not allotted':['आवंटित नहीं','ફાળવણી નથી'],'Awaiting allotment':['आवंटन की प्रतीक्षा','ફાળવણીની રાહ'],'Bid pending':['बोली लंबित','બિડ બાકી'],'Allotment out':['आवंटन जारी','ફાળવણી જાહેર'],'Allotment date':['आवंटन तिथि','ફાળવણી તારીખ'],'Listing date':['लिस्टिंग तिथि','લિસ્ટિંગ તારીખ'],'Status':['स्थिति','સ્થિતિ'],'Notify me on allotment':['आवंटन पर सूचित करें','ફાળવણી પર જાણ કરો'],'Applied accounts':['आवेदित खाते','અરજી કરેલ ખાતા'],
+'No account has applied for this IPO yet.':['इस IPO के लिए अभी किसी खाते ने आवेदन नहीं किया है।','આ IPO માટે હજી કોઈ ખાતાએ અરજી કરી નથી.'],'Allotment results are a demo until a live registrar feed is connected.':['लाइव रजिस्ट्रार फ़ीड जुड़ने तक आवंटन परिणाम डेमो हैं।','લાઇવ રજિસ્ટ્રાર ફીડ જોડાય ત્યાં સુધી ફાળવણી પરિણામો ડેમો છે.'],
+'Accounts':['खाते','ખાતા'],'Add account':['खाता जोड़ें','ખાતું ઉમેરો'],'Edit account':['खाता संपादित करें','ખાતું સંપાદિત કરો'],'Save account':['खाता सहेजें','ખાતું સાચવો'],'Edit':['संपादित करें','સંપાદિત કરો'],'Delete':['हटाएं','કાઢી નાખો'],'Name':['नाम','નામ'],'Demat account number (DP ID + Client ID)':['डीमैट खाता संख्या (DP ID + Client ID)','ડિમેટ ખાતા નંબર (DP ID + Client ID)'],'No accounts.':['कोई खाता नहीं।','કોઈ ખાતું નથી.'],
+'Notification settings':['सूचना सेटिंग्स','સૂચના સેટિંગ્સ'],'Theme':['थीम','થીમ'],'Font size':['फ़ॉन्ट आकार','ફોન્ટ સાઇઝ'],'Font style':['फ़ॉन्ट शैली','ફોન્ટ શૈલી'],'Language':['भाषा','ભાષા'],'‹ Settings':['‹ सेटिंग्स','‹ સેટિંગ્સ'],'Allow device alerts':['डिवाइस अलर्ट की अनुमति दें','ડિવાઇસ એલર્ટની મંજૂરી આપો'],'IPO opening':['IPO खुलना','IPO ખુલવું'],'IPO closing soon':['IPO जल्द बंद होगा','IPO ટૂંક સમયમાં બંધ થશે'],'Allotment status':['आवंटन स्थिति','ફાળવણીની સ્થિતિ'],'Listing day':['लिस्टिंग का दिन','લિસ્ટિંગનો દિવસ'],'Big GMP changes':['GMP में बड़े बदलाव','GMP માં મોટા ફેરફાર'],
+'Alerts appear in-app and, if allowed, on your device.':['अलर्ट ऐप में और अनुमति होने पर आपके डिवाइस पर दिखेंगे।','એલર્ટ એપમાં અને મંજૂરી હોય તો તમારા ડિવાઇસ પર દેખાશે.'],'Small':['छोटा','નાનું'],'Medium':['मध्यम','મધ્યમ'],'Large':['बड़ा','મોટું'],'Extra large':['बहुत बड़ा','ખૂબ મોટું'],'Default':['डिफ़ॉल्ट','ડિફોલ્ટ'],'This month':['इस महीने','આ મહિને'],'No IPO events this month.':['इस महीने कोई IPO कार्यक्रम नहीं।','આ મહિને કોઈ IPO કાર્યક્રમ નથી.'],
+'Category':['श्रेणी','શ્રેણી'],'Individual':['व्यक्तिगत','વ્યક્તિગત'],'Auto cut-off (bid at upper price)':['ऑटो कट-ऑफ (ऊपरी कीमत पर बोली)','ઓટો કટ-ઓફ (ઉપરના ભાવે બિડ)'],'Price per share':['प्रति शेयर कीमत','શેર દીઠ ભાવ'],'Lot number':['लॉट संख्या','લોટ નંબર'],'Apply on (date & time)':['आवेदन की तिथि और समय','અરજીની તારીખ અને સમય'],'Leave empty to apply right now.':['अभी आवेदन के लिए खाली छोड़ें।','હમણાં અરજી કરવા ખાલી રાખો.'],'I agree to the terms and conditions':['मैं नियम और शर्तों से सहमत हूँ','હું નિયમો અને શરતો સાથે સંમત છું'],'Investor details':['निवेशक विवरण','રોકાણકારની વિગતો'],
+'Live Subscription':['लाइव सब्सक्रिप्शन','લાઇવ સબ્સ્ક્રિપ્શન'],'Subscription Details (No. of Shares)':['सब्सक्रिप्शन विवरण (शेयरों की संख्या)','સબ્સ્ક્રિપ્શન વિગતો (શેરની સંખ્યા)'],'Application-Wise Breakup':['आवेदन-वार विवरण','અરજી મુજબ વિગત'],'Subscription Demand (in ₹ crore)':['सब्सक्रिप्शन मांग (₹ करोड़ में)','સબ્સ્ક્રિપ્શન માંગ (₹ કરોડમાં)'],'Offered':['प्रस्तावित','ઓફર'],'Times':['गुना','ગણું'],'Total':['कुल','કુલ'],'Reserved':['आरक्षित','અનામત'],'Demand':['मांग','માંગ'],
+'IPO Details':['IPO विवरण','IPO વિગતો'],'Lot(s) Distribution':['लॉट वितरण','લોટ વિતરણ'],'IPO Reservation':['IPO आरक्षण','IPO અનામત'],'Key Performance Indicators (KPI)':['मुख्य प्रदर्शन संकेतक (KPI)','મુખ્ય પ્રદર્શન સૂચકાંકો (KPI)'],'Company Financial':['कंपनी वित्तीय','કંપનીના નાણાકીય આંકડા'],'(In ₹ Crore)':['(₹ करोड़ में)','(₹ કરોડમાં)'],'Comparison with Industry Peers':['उद्योग समकक्षों से तुलना','ઉદ્યોગના સમકક્ષો સાથે સરખામણી'],'*Company does not have any peer group company for comparison with Industry Peer.':['*तुलना के लिए कंपनी का कोई समकक्ष कंपनी समूह नहीं है।','*સરખામણી માટે કંપની પાસે કોઈ સમકક્ષ કંપની જૂથ નથી.'],
+'About Company':['कंपनी के बारे में','કંપની વિશે'],'Strength Factors':['मजबूती के कारक','શક્તિના પરિબળો'],'Risk Factors':['जोखिम कारक','જોખમ પરિબળો'],'View More':['और देखें','વધુ જુઓ'],'View Less':['कम देखें','ઓછું જુઓ'],'Registrar':['रजिस्ट्रार','રજિસ્ટ્રાર'],'Lead Manager(s)':['लीड मैनेजर','લીડ મેનેજર'],'Company Address':['कंपनी का पता','કંપનીનું સરનામું'],'Min. Share':['न्यूनतम शेयर','ન્યૂનતમ શેર'],'Min. Amt.':['न्यूनतम राशि','ન્યૂનતમ રકમ'],'Total Lots':['कुल लॉट','કુલ લોટ'],'Shares Offered':['प्रस्तावित शेयर','ઓફર કરેલ શેર'],
+'Total Issue Size':['कुल इश्यू साइज़','કુલ ઇશ્યૂ સાઇઝ'],'Fresh Issue':['फ्रेश इश्यू','ફ્રેશ ઇશ્યૂ'],'Face Value':['फेस वैल्यू','ફેસ વેલ્યુ'],'Issue Type':['इश्यू प्रकार','ઇશ્યૂ પ્રકાર'],'Listing At':['लिस्टिंग कहाँ','લિસ્ટિંગ ક્યાં'],'Share Holding Pre Issue':['इश्यू से पहले शेयरहोल्डिंग','ઇશ્યૂ પહેલાં શેરહોલ્ડિંગ'],'Share Holding Post Issue':['इश्यू के बाद शेयरहोल्डिंग','ઇશ્યૂ પછી શેરહોલ્ડિંગ'],'Reserved for Market Maker':['मार्केट मेकर के लिए आरक्षित','માર્કેટ મેકર માટે અનામત'],'Market Maker':['मार्केट मेकर','માર્કેટ મેકર'],'Detail':['विवरण','વિગત'],'Value':['मान','મૂલ્ય'],
+'Period Ended':['अवधि समाप्त','સમાપ્ત થયેલ સમયગાળો'],'Assets':['संपत्ति','સંપત્તિ'],'Total Income':['कुल आय','કુલ આવક'],'Profit After Tax':['कर के बाद लाभ','કર પછીનો નફો'],'NET Worth':['नेट वर्थ','નેટ વર્થ'],'Reserves and Surplus':['रिज़र्व और सरप्लस','રિઝર્વ અને સરપ્લસ'],'Total Borrowing':['कुल उधारी','કુલ ઉધારી'],'CAPITAL STRUCTURE':['कैपिटल स्ट्रक्चर','કેપિટલ સ્ટ્રક્ચર'],'ANCHOR File':['एंकर फ़ाइल','એન્કર ફાઇલ'],
+'Add an account first (Account tab)':['पहले एक खाता जोड़ें (खाता टैब)','પહેલાં એક ખાતું ઉમેરો (ખાતા ટેબ)'],'Bid cancelled':['बोली रद्द हुई','બિડ રદ થઈ'],'Please agree to the terms and conditions':['कृपया नियम और शर्तों से सहमत हों','કૃપા કરીને નિયમો અને શરતો સાથે સંમત થાઓ'],'Search IPO, bid, account…':['IPO, बोली, खाता खोजें…','IPO, બિડ, ખાતું શોધો…'],'Pull down to refresh':['रिफ्रेश करने के लिए नीचे खींचें','રિફ્રેશ કરવા નીચે ખેંચો']});
+const OT=new WeakMap();
+function tr(root){const d=TR[S.lang]||{},w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){const o=OT.has(n)?OT.get(n):(OT.set(n,n.nodeValue),n.nodeValue),k=o.trim();n.nodeValue=k&&d[k]!==undefined?o.replace(k,d[k]):o}
+root.querySelectorAll('[placeholder]').forEach(e=>{if(!e.dataset.o)e.dataset.o=e.getAttribute('placeholder');e.setAttribute('placeholder',d[e.dataset.o]||e.dataset.o)})}
+const alSt=b=>{const i=IPOS.find(x=>x.n===b.n);if(!i)return b.status;if(b.status==='Pending')return'Bid pending';if(b.status!=='Success')return b.status;return day(0)<i.al?'Awaiting allotment':((b.id*7+i.n.length)%10<3?'Allotted':'Not allotted')};
+const cur=()=>S.users.find(u=>u.id===S.cur);
+const uData=u=>u.id===S.cur?{accts:S.accts,bids:S.bids}:(S.d[u.id]||{accts:[],bids:[]});
+const A0=()=>({mode:'login',email:'',name:'',msg:'',ok:''});
+let A=A0(),FAIL={n:0,until:0};
+const enc=new TextEncoder(),hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+const newSalt=()=>hex(crypto.getRandomValues(new Uint8Array(16)));
+async function hashPw(pw,salt){const k=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveBits']);return hex(await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode(salt),iterations:100000,hash:'SHA-256'},k,256))}
+// Supabase (email + password, reset email, live data). Active only when public/config.js has your Supabase URL and anon key.
+let sb=null;const FBC=window.FF_CONFIG||{};
+if(FBC.supabaseUrl&&FBC.supabaseKey&&window.supabase){try{sb=window.supabase.createClient(FBC.supabaseUrl,FBC.supabaseKey);
+sb.auth.onAuthStateChange((ev,se)=>{if(ev==='PASSWORD_RECOVERY'){A=Object.assign(A0(),{mode:'newpw'});if(S.cur)forceOut();else authShow();return}
+if(ev==='SIGNED_OUT'||(ev==='INITIAL_SESSION'&&!se)){const c=cur();if(c&&c.fb)forceOut()}})}catch(e){sb=null}}
+const fbMsg=e=>{const m=String(e&&e.message||'').toLowerCase();return m.includes('invalid login')?'Incorrect email or password':m.includes('already registered')?'This email is already registered. Use Login.':m.includes('not confirmed')?'Please confirm your email first (check your inbox).':m.includes('password')&&m.includes('least')?'Password must be at least 8 characters':m.includes('valid email')||m.includes('invalid email')?'Enter a valid email address':m.includes('rate limit')||m.includes('seconds')?'Too many requests. Try again in a minute.':m.includes('fetch')||m.includes('network')?'Network problem. Check your internet.':'Something went wrong. Try again.'};
+const okE=e=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+function authShow(){let a=$('#auth');if(!a){a=document.createElement('div');a.id='auth';document.body.appendChild(a)}if(S.cur){a.style.display='none';return}a.style.display='block';authRender()}
+function authRender(){const a=$('#auth'),first=!S.users.length&&!sb;if(first&&A.mode==='login')A.mode='reg';const m=A.mode,kd=`onkeydown="if(event.key==='Enter')aSubmit()"`;
+const pw=(id,l,ac)=>`<label>${l}</label><input class="pw" id="${id}" type="password" autocomplete="${ac}" ${kd}>`;
+const em=`<label>Email</label><input id="a-e" type="email" inputmode="email" autocapitalize="none" autocomplete="email" value="${A.email}" ${kd}>`;
+let b=first||m==='forgot'||m==='newpw'?'':`<div class="seg"><button class="${m==='reg'?'on':''}" onclick="aMode('reg')">Register</button><button class="${m==='reg'?'':'on'}" onclick="aMode('login')">Login</button></div>`;
+if(m==='reg')b+=`<label>Full name</label><input id="a-n" value="${A.name}" autocomplete="name">${em}${pw('a-p','Password','new-password')}${pw('a-q','Confirm password','new-password')}`;
+else if(m==='login')b+=`${em}${pw('a-p','Password','current-password')}<div style="text-align:right;margin-top:8px"><button class="btn o s" onclick="aMode('forgot')">Forgot password?</button></div>`;
+else if(m==='newpw')b+=`${pw('a-p','New password','new-password')}${pw('a-q','Confirm password','new-password')}`;
+else b+=`<div class="mu">Enter your email and we will send you a link to reset your password.</div>${em}`;
+if(m!=='forgot')b+=`<label style="display:flex;gap:6px;align-items:center;color:var(--tx);margin-top:10px"><input type="checkbox" style="width:auto" onchange="aShow(this.checked)"> Show password</label>`;
+b+=`<div class="neg" style="margin-top:8px">${A.msg}</div><div class="pos" style="margin-top:8px">${A.ok}</div><button class="btn l" style="width:100%;margin-top:12px" onclick="aSubmit()">${m==='reg'?'Create account':m==='login'?'Login':m==='newpw'?'Save password':'Send reset link'}</button>${m==='forgot'?`<button class="btn o l" style="width:100%;margin-top:10px" onclick="aMode('login')">Back to login</button>`:''}`;
+a.innerHTML=`<div class="ah"><span class="lg">₹</span><h1>Finance Freedom</h1></div><div class="ab"><h2 style="margin:6px 0 4px">${m==='reg'?'Register':m==='login'?'Login':m==='newpw'?'Set a password':'Forgot password?'}</h2>${b}</div>`;tr(a)}
+window.aShow=on=>document.querySelectorAll('#auth .pw').forEach(e=>e.type=on?'text':'password');
+window.aMode=m=>{const e=A.email;A=Object.assign(A0(),{mode:m,email:e});authRender()};
+function aRead(){const g=id=>{const e=$('#'+id);return e?e.value:''};if($('#a-n'))A.name=g('a-n').trim();if($('#a-e'))A.email=g('a-e').trim();return{p1:g('a-p'),p2:g('a-q')}}
+function done(u){A=A0();authShow();go('ipo');toast('Welcome, '+u.name);startSync()}
+function localUser(au,em,now){let u=S.users.find(x=>x.id===au.id);if(!u){u={id:au.id,name:(au.user_metadata&&au.user_metadata.name)||em.split('@')[0],email:em,fb:true,regAt:now,lastLogin:now};S.users.push(u)}u.lastLogin=now;return u}
+window.aSubmit=async()=>{const{p1,p2}=aRead(),m=A.mode,now=Date.now(),em=A.email.toLowerCase();A.msg='';A.ok='';
+try{
+if(m==='forgot'){if(!okE(em))A.msg='Enter a valid email address';else if(!sb)A.msg='Password reset by email needs Supabase setup (see README).';else{const r=await sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin});if(r.error&&/rate|seconds/i.test(r.error.message))A.msg=fbMsg(r.error);else A.ok='If this email is registered, a reset link has been sent. Check your inbox and spam folder.'}return authRender()}
+if(m==='newpw'){if(p1.length<8)A.msg='Password must be at least 8 characters';else if(p1!==p2)A.msg='Passwords do not match';else{const r=await sb.auth.updateUser({password:p1});if(r.error)throw r.error;const g=await sb.auth.getUser(),au=g.data.user;try{history.replaceState(null,'',location.pathname)}catch(e){}const u=localUser(au,(au.email||'').toLowerCase(),now);loginUser(u.id);return done(u)}return authRender()}
+if(m==='reg'){if(A.name.length<2)A.msg='Enter your full name';else if(!okE(em))A.msg='Enter a valid email address';else if(p1.length<8)A.msg='Password must be at least 8 characters';else if(p1!==p2)A.msg='Passwords do not match';
+else{let uid,salt,h;if(sb){const r=await sb.auth.signUp({email:em,password:p1,options:{data:{name:A.name}}});if(r.error)throw r.error;const au=r.data.user;if(au&&au.identities&&au.identities.length===0){A.msg='This email is already registered. Use Login.';return authRender()}
+if(!r.data.session){A.mode='login';A.ok='Account created. Check your email to confirm it, then log in.';return authRender()}uid=au.id}
+else{if(S.users.find(u=>u.email===em)){A.msg='This email is already registered. Use Login.';return authRender()}uid='u'+now;salt=newSalt();h=await hashPw(p1,salt)}
+const first=!S.users.length,u={id:uid,name:A.name,email:em,fb:!!sb,salt,h,regAt:now,lastLogin:now};S.users.push(u);loginUser(uid,first);return done(u)}}
+else{if(now<FAIL.until)A.msg='Too many attempts. Try again in '+Math.ceil((FAIL.until-now)/1000)+' s';else if(!okE(em))A.msg='Enter a valid email address';else if(!p1)A.msg='Enter your password';
+else if(sb){const r=await sb.auth.signInWithPassword({email:em,password:p1});if(r.error)throw r.error;const u=localUser(r.data.user,em,now);loginUser(u.id);return done(u)}
+else{const u=S.users.find(x=>x.email===em&&x.h);if(!u||await hashPw(p1,u.salt)!==u.h){FAIL.n++;if(FAIL.n>=5){FAIL.until=now+3e4;FAIL.n=0}A.msg='Incorrect email or password'}else{FAIL.n=0;u.lastLogin=now;loginUser(u.id);return done(u)}}}
+}catch(e){A.msg=fbMsg(e)}
+authRender()};
+function loginUser(id,keep){if(S.cur)save();if(!keep){const d=S.d[id];S.accts=d?d.accts:[];S.bids=d?d.bids:[];S.aNotify=d?d.aNotify:{};S.dels=d&&d.dels?d.dels:[]}S.cur=id;save()}
+function forceOut(){save();stopSync();S.cur=0;S.accts=[];S.bids=[];S.aNotify={};S.dels=[];lsSave();closeS();authShow()}
+window.logout=()=>{if(!confirm('Log out of Finance Freedom?'))return;forceOut();if(sb)sb.auth.signOut()};
+window.pwForm=()=>sheet(`<h2 style="margin:0">Change password</h2><label>Current password</label><input id="c-o" type="password" autocomplete="current-password"><label>New password</label><input id="c-n" type="password" autocomplete="new-password"><label>Confirm password</label><input id="c-c" type="password" autocomplete="new-password"><div class="neg" id="c-m" style="margin-top:8px"></div><div class="row" style="margin-top:14px"><button class="btn o" onclick="closeS()">Cancel</button><button class="btn" onclick="pwSave()">Save password</button></div>`);
+window.pwSave=async()=>{const u=cur(),o=$('#c-o').value,n=$('#c-n').value,c=$('#c-c').value,m=$('#c-m');
+if(n.length<8){m.textContent='Password must be at least 8 characters';return}if(n!==c){m.textContent='Passwords do not match';return}
+if(sb&&u.fb){try{const v=await sb.auth.signInWithPassword({email:u.email,password:o});if(v.error){m.textContent='Current password is incorrect';return}const r=await sb.auth.updateUser({password:n});if(r.error)throw r.error;closeS();toast('Password changed')}catch(e){m.textContent=fbMsg(e)}return}
+if(!u.h||await hashPw(o,u.salt)!==u.h){m.textContent='Current password is incorrect';return}u.salt=newSalt();u.h=await hashPw(n,u.salt);save();closeS();toast('Password changed')};
+const STG=[['exch','Submitted to exchange'],['bank','Request accepted by sponsor bank'],['client','Request accepted by client']],DLY=[3e3,10e3,20e3];
+const T=k=>(TR[S.lang]||{})[k]||k;
+function startFlow(b){b.p0=Date.now();b.st=[]}
+function advance(){if(!S.cur)return;let ch=0;S.bids.forEach(b=>{if(b.status!=='Success'||!b.p0)return;b.st=b.st||[];while(b.st.length<3&&Date.now()-b.p0>=DLY[b.st.length]){const k=STG[b.st.length],tt=b.p0+DLY[b.st.length];b.st.push({k:k[0],t:tt});b.up=Date.now();ch++;if(S.notif.bid!==false&&Date.now()-tt<6e4)alertUser(b.n+': '+T(k[1]))}});if(ch){save();updBell();if(page==='bids'&&!$('#ov'))go('bids')}}
+setInterval(advance,2000);
+const tl=b=>`<div style="margin-top:8px">${STG.map((k,i)=>{const x=(b.st||[])[i];return`<div class="stp ${x?'ok':''}"><span class="dt">${x?'✓':i+1}</span><div>${k[1]}${x?`<div class="mu">${ft(x.t)}</div>`:''}</div></div>`}).join('')}</div>`;
+function notes(){const a=[];S.bids.forEach(b=>(b.st||[]).forEach((x,i)=>a.push({n:b.n,l:STG[i][1],t:x.t})));(S.feed||[]).forEach(f=>a.push({n:f.n,l:f.m,t:f.t}));return a.sort((x,y)=>y.t-x.t)}
+function updBell(){const u=cur(),c=notes().filter(x=>x.t>((u&&u.seen)||0)).length;$('#bc').textContent=c?' '+c:''}
+window.bell=()=>{const u=cur(),a=notes();sheet(`<h2 style="margin:0">Notifications</h2>${a.map(x=>`<div class="card"><div class="b">${x.n}</div><div><span>✓</span> ${x.l}</div><div class="mu">${ft(x.t)}</div></div>`).join('')||'<p class="mu">No notifications yet.</p>'}<button class="btn o l" style="width:100%" onclick="closeS()">Close</button>`);if(u){u.seen=Date.now();save();updBell()}};
+// ---- LIVE DATA (Netlify function /api/ipos) ----
+const DATA_URL='/api/ipos';let LIVE=false,SRC='';
+const dt=x=>x?new Date(x+'T00:00:00').getTime():0;
+const fromApi=o=>{const u=o.subscription||{};return{n:o.name,ty:o.type==='SME'?'SME':'Mainboard',o:dt(o.open),c:dt(o.close),lo:+o.priceLow||0,hi:+o.priceHigh||0,lot:+o.lot||1,sz:+o.issueSizeCr||0,g:+o.gmp||0,h:o.gmpHeard||'—',al:dt(o.allotment),li:dt(o.listing),rg:o.registrar||'—',drhp:o.drhpUrl||'',anchor:o.anchorUrl||'',out:o.allotmentOut,su:{r:+u.retail||0,n:+u.nii||0,q:+u.qib||0},bs:o.financials||[[2024,0,0,0],[2025,0,0,0],[2026,0,0,0]]}};
+const MSN=[1,2,5,10,20,50,100];
+function detect(list){const old=S.snap,neu={},ev=[];
+list.forEach(i=>{const out=(i.out!==undefined&&i.out!=='')?/^(y|yes|true|1)$/i.test(String(i.out)):!!(i.al&&day(0)>=i.al),n=neu[i.n]={g:i.g,r:i.su.r,n:i.su.n,q:i.su.q,d:!!i.drhp,a:!!i.anchor,o:out},o=old&&old[i.n];if(!o)return;
+[['r','Retail'],['n','NII'],['q','QIB']].forEach(([k,l])=>{const m=MSN.filter(x=>o[k]<x&&n[k]>=x).pop();if(m)ev.push(['sub',i.n,l+' subscription crossed '+m+'x (now '+n[k]+'x)'])});
+if(Math.abs(i.g-o.g)>=Math.max(1,i.hi*0.02))ev.push(['gmp',i.n,'GMP changed '+R(o.g)+' to '+R(i.g)]);
+if(!o.d&&n.d)ev.push(['drhp',i.n,'DRHP/RHP filed']);if(!o.a&&n.a)ev.push(['anchor',i.n,'Anchor investor list released']);if(!o.o&&n.o)ev.push(['allot',i.n,'Allotment is out'])});
+S.snap=neu;if(old&&S.cur)ev.forEach(([k,n,m])=>{S.feed.unshift({t:Date.now(),n,m,k});if(S.notif[k]!==false)alertUser(n+': '+m)});S.feed=S.feed.slice(0,100);save();updBell()}
+window.docOpen=(n,t)=>{const i=IPOS.find(x=>x.n===n),u=t.startsWith('DRHP')?i.drhp:t.startsWith('ANCHOR')?i.anchor:'';if(u&&/^https?:\/\//i.test(u))window.open(u,'_blank','noopener');else toast(t+': not available yet')};
+const rowApi=r=>({name:r.name,type:r.type,open:r.open_date,close:r.close_date,priceLow:r.price_low,priceHigh:r.price_high,lot:r.lot,issueSizeCr:r.issue_size_cr,gmp:r.gmp,gmpHeard:r.gmp_heard,allotment:r.allotment_date,listing:r.listing_date,registrar:r.registrar,subscription:{retail:r.sub_retail,nii:r.sub_nii,qib:r.sub_qib},drhpUrl:r.drhp_url,anchorUrl:r.anchor_url,allotmentOut:r.allotment_out===null?undefined:r.allotment_out});
+async function loadLive(manual){try{let j=null;if(sb){try{const q=await sb.from('ipos').select('*');if(!q.error&&q.data&&q.data.length)j={source:'Supabase',updatedAt:new Date(Math.max(...q.data.map(r=>new Date(r.updated_at).getTime()||0))).toISOString(),ipos:q.data.map(rowApi)}}catch(e){}}
+if(!j){const r=await fetch(DATA_URL,{cache:'no-store'});if(!r.ok)throw 0;j=await r.json()}if(!j.ipos||!j.ipos.length)throw 0;IPOS=j.ipos.map(fromApi);LIVE=true;detect(IPOS);SRC=j.source||'server';lastRef=j.updatedAt?new Date(j.updatedAt).getTime():Date.now();if(S.cur&&!$('#ov'))go(page);if(manual)toast('Updated')}catch(e){if(manual)toast(LIVE?'Could not refresh, showing last data':'Live server not reachable')}}
+setInterval(()=>{if(document.visibilityState==='visible')loadLive()},300000);
+if(sb){sb.channel('ipos-live').on('postgres_changes',{event:'*',schema:'public',table:'ipos'},()=>{clearTimeout(window._rt);window._rt=setTimeout(loadLive,1500)}).subscribe()}
+// ---- SYNC accounts + bids between phones (Supabase table user_data) ----
+let _st=null,_lastPush='',_syncing=false,_ch=null,_rt2=null;
+const blob=()=>({accts:S.accts,bids:S.bids,aNotify:S.aNotify,dels:S.dels||[]});
+function mergeIn(r){const before=JSON.stringify(blob()),dels=[...new Set([...(S.dels||[]),...(r.dels||[])])];
+const pick=(a,b)=>{const m=new Map();[...(a||[]),...(b||[])].forEach(x=>{const o=m.get(x.id);if(!o||(x.up||0)>(o.up||0))m.set(x.id,x)});return[...m.values()]};
+S.dels=dels;S.accts=pick(S.accts,r.accts).filter(a=>!dels.includes(a.id));S.bids=pick(S.bids,r.bids).sort((a,b)=>(b.made||0)-(a.made||0));S.aNotify=Object.assign({},r.aNotify||{},S.aNotify||{});
+return JSON.stringify(blob())!==before}
+const syncUser=()=>{const u=cur();return sb&&u&&u.fb?u:null};
+async function pullSync(){const u=syncUser();if(!u)return;try{const q=await sb.from('user_data').select('data').eq('user_id',u.id).maybeSingle();if(q.error)throw q.error;
+if(q.data&&q.data.data&&JSON.stringify(q.data.data)!==_lastPush&&mergeIn(q.data.data)){lsSave();if(S.cur&&!$('#ov'))go(page);syncSoon()}}catch(e){}}
+async function pushSync(){const u=syncUser();if(!u||_syncing)return;_syncing=true;try{const q=await sb.from('user_data').select('data').eq('user_id',u.id).maybeSingle();let ch=false;if(q.data&&q.data.data)ch=mergeIn(q.data.data);
+if(ch)lsSave();const b=blob(),j=JSON.stringify(b);if(j!==_lastPush){const r=await sb.from('user_data').upsert({user_id:u.id,data:b},{onConflict:'user_id'});if(!r.error)_lastPush=j}
+if(ch&&S.cur&&!$('#ov'))go(page)}catch(e){}finally{_syncing=false}}
+function syncSoon(){try{if(!syncUser())return;clearTimeout(_st);_st=setTimeout(pushSync,2000)}catch(e){}}
+function stopSync(){try{clearTimeout(_st);if(_ch&&sb){sb.removeChannel(_ch)}_ch=null;_lastPush=''}catch(e){}}
+function startSync(){const u=syncUser();if(!u)return;stopSync();pushSync();try{_ch=sb.channel('ud-'+u.id).on('postgres_changes',{event:'*',schema:'public',table:'user_data',filter:'user_id=eq.'+u.id},()=>{clearTimeout(_rt2);_rt2=setTimeout(pullSync,800)}).subscribe()}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')pullSync()});
+const NAV=[['ipo','▦','IPO'],['acc','☰','Account'],['bids','✎','Bids'],['allot','✔','Allotment'],['set','⚙','Settings']];
+function go(p){if(p!==page)window._sec=0;page=p;closeS();$('#nav').innerHTML=NAV.map(n=>`<button class="${n[0]===p?'on':''}" onclick="go('${n[0]}')"><i>${n[1]}</i>${n[2]}</button>`).join('');
+$('#v').innerHTML=({ipo:ipoPage,bids:bidsPage,allot:allotPage,cal:calPage,set:setPage,acc:()=>{window._sec='acc';return setPage()}})[p]();tr(document.body)}
+function refresh(){if(LIVE){loadLive(true);return}IPOS.forEach(i=>{if(st(i)!=='Closed'){const d=Math.round((Math.random()-.4)*4);i.g=Math.max(-5,i.g+d);i.su.r=+(i.su.r*(1+Math.random()*.05)).toFixed(2)}});lastRef=Date.now();go(page);toast('Refreshed '+ft(lastRef))}
+$('#rf').onclick=refresh;$('#q').oninput=e=>{q=e.target.value;go(page)};
+// pull to refresh
+let y0=null;const M=$('#m');
+M.addEventListener('touchstart',e=>{y0=M.scrollTop===0?e.touches[0].clientY:null},{passive:true});
+M.addEventListener('touchmove',e=>{if(y0!==null){const d=e.touches[0].clientY-y0;if(d>0)$('#ptr').style.height=Math.min(d/2,48)+'px'}},{passive:true});
+M.addEventListener('touchend',e=>{if(y0!==null&&parseInt($('#ptr').style.height)>=40)refresh();$('#ptr').style.height=0;y0=null});
+// bid scheduler: due pending bids resolve (demo outcome), alerts on IPO open/close
+setInterval(()=>{let ch=0;S.bids.forEach(b=>{if(b.status==='Pending'&&b.at<=Date.now()){b.status=Math.random()<.85?'Success':'Failed';b.up=Date.now();if(b.status==='Success')startFlow(b);ch++;alertUser('Bid '+b.status.toLowerCase()+': '+b.n)}});if(ch){lg('Scheduled bids processed');save();go(page)}},15000);
+document.documentElement.dataset.t=S.theme;applyPrefs();S.cur?go('ipo'):authShow();loadLive();startSync();
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+</script></body></html>

@@ -1,0 +1,2 @@
+name,type,open,close,priceLow,priceHigh,lot,issueSizeCr,gmp,gmpHeard,allotment,listing,registrar,retail,nii,qib,drhpUrl,anchorUrl,allotmentOut
+EXAMPLE Company Ltd (delete this row),SME,2026-10-01,2026-10-05,100,105,1200,40,12,₹10-14,2026-10-08,2026-10-12,Bigshare Services,0,0,0,,,
